@@ -2,8 +2,6 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-from PIL import Image
-import io
 
 st.title('Aplikasi Perhitungan EOQ (Economic Order Quantity)')
 st.write("""
@@ -49,8 +47,8 @@ with tab1:
     st.write("""
     **Panduan Penggunaan:**
     1. Masukkan permintaan tahunan (jumlah unit yang dibutuhkan dalam setahun)
-    2. Masukkan biaya pemesanan per pesanan (dalam mata uang)
-    3. Masukkan biaya penyimpanan per unit per tahun (dalam mata uang)
+    2. Masukkan biaya pemesanan per pesanan
+    3. Masukkan biaya penyimpanan per unit per tahun
     4. Aplikasi akan menghitung:
        - EOQ (jumlah optimal pemesanan)
        - Total biaya persediaan
@@ -58,9 +56,9 @@ with tab1:
     """)
     
     st.subheader("Parameter Input")
-    D = st.number_input("Permintaan tahunan (unit)", min_value=1, value=1000, key="D1")
-    S = st.number_input("Biaya pemesanan per pesanan", min_value=0.01, value=50.0, key="S1")
-    H = st.number_input("Biaya penyimpanan per unit per tahun", min_value=0.01, value=2.0, key="H1")
+    D = st.number_input("Permintaan tahunan (unit)", min_value=1, value=1000, key="D1", format="%d")
+    S = st.number_input("Biaya pemesanan per pesanan", min_value=0.01, value=50.0, key="S1", format="%.2f")
+    H = st.number_input("Biaya penyimpanan per unit per tahun", min_value=0.01, value=2.0, key="H1", format="%.2f")
     
     if st.button("Hitung EOQ (Metode Klasik)"):
         # Hitung EOQ
@@ -69,9 +67,9 @@ with tab1:
         order_frequency = D / eoq
         
         st.subheader("Hasil Perhitungan")
-        st.write(f"EOQ (Jumlah Pemesanan Optimal): {eoq:.2f} unit")
-        st.write(f"Total Biaya Persediaan Tahunan: {total_cost:.2f}")
-        st.write(f"Jumlah Pemesanan per Tahun: {order_frequency:.2f} kali")
+        st.write(f"EOQ (Jumlah Pemesanan Optimal): {eoq:.0f} unit")
+        st.write(f"Total Biaya Persediaan Tahunan: {total_cost:.2f}".replace(".00", ""))
+        st.write(f"Jumlah Pemesanan per Tahun: {order_frequency:.1f} kali")
         
         # Visualisasi
         st.subheader("Visualisasi Biaya Persediaan")
@@ -99,8 +97,8 @@ with tab2:
     st.write("""
     **Panduan Penggunaan:**
     1. Masukkan permintaan tahunan (jumlah unit yang dibutuhkan dalam setahun)
-    2. Masukkan biaya pemesanan per pesanan (dalam mata uang)
-    3. Masukkan harga per unit barang (dalam mata uang)
+    2. Masukkan biaya pemesanan per pesanan
+    3. Masukkan harga per unit barang
     4. Masukkan persentase biaya penyimpanan (% dari nilai barang)
     5. Aplikasi akan menghitung:
        - EOQ (jumlah optimal pemesanan)
@@ -109,10 +107,10 @@ with tab2:
     """)
     
     st.subheader("Parameter Input")
-    D = st.number_input("Permintaan tahunan (unit)", min_value=1, value=1000, key="D2")
-    S = st.number_input("Biaya pemesanan per pesanan", min_value=0.01, value=50.0, key="S2")
-    C = st.number_input("Harga per unit barang", min_value=0.01, value=10.0)
-    i = st.number_input("Persentase biaya penyimpanan (%)", min_value=0.01, value=20.0)
+    D = st.number_input("Permintaan tahunan (unit)", min_value=1, value=1000, key="D2", format="%d")
+    S = st.number_input("Biaya pemesanan per pesanan", min_value=0.01, value=50.0, key="S2", format="%.2f")
+    C = st.number_input("Harga per unit barang", min_value=0.01, value=10.0, format="%.2f")
+    i = st.number_input("Persentase biaya penyimpanan (%)", min_value=0.01, value=20.0, format="%.2f")
     
     if st.button("Hitung EOQ (Metode Persentase)"):
         # Konversi persentase ke desimal
@@ -125,10 +123,10 @@ with tab2:
         order_frequency = D / eoq
         
         st.subheader("Hasil Perhitungan")
-        st.write(f"EOQ (Jumlah Pemesanan Optimal): {eoq:.2f} unit")
-        st.write(f"Total Biaya Persediaan Tahunan: {total_cost:.2f}")
-        st.write(f"Jumlah Pemesanan per Tahun: {order_frequency:.2f} kali")
-        st.write(f"Biaya Penyimpanan per Unit: {H:.2f} (dihitung dari {i}% dari harga unit {C})")
+        st.write(f"EOQ (Jumlah Pemesanan Optimal): {eoq:.0f} unit")
+        st.write(f"Total Biaya Persediaan Tahunan: {total_cost:.2f}".replace(".00", ""))
+        st.write(f"Jumlah Pemesanan per Tahun: {order_frequency:.1f} kali")
+        st.write(f"Biaya Penyimpanan per Unit: {H:.2f}".replace(".00", "") + f" (dihitung dari {i:.0f}% dari harga unit {C:.0f})")
         
         # Visualisasi
         st.subheader("Visualisasi Biaya Persediaan")
