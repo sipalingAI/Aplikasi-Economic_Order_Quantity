@@ -12,17 +12,14 @@ with st.expander("📘 Panduan Penggunaan"):
     st.markdown("""
 Economic Order Quantity (EOQ) adalah metode untuk menentukan jumlah pesanan optimal yang meminimalkan total biaya persediaan.
 
-### 📐 Rumus yang Digunakan:
+st.markdown("### 📐 Rumus yang Digunakan:")
 
-**Rumus Klasik:**  
-\\[
-EOQ = \\sqrt{\\frac{2 \\times R \\times S}{H}}
-\\]
+st.markdown("**Rumus Klasik:**")
+st.latex(r"EOQ = \sqrt{\frac{2 \times R \times S}{H}}")
 
-**Rumus Persentase:**  
-\\[
-EOQ = \\sqrt{\\frac{2 \\times R \\times S}{P \\times I}}
-\\]
+st.markdown("**Rumus Persentase:**")
+st.latex(r"EOQ = \sqrt{\frac{2 \times R \times S}{P \times I}}")
+
 
 ---
 
