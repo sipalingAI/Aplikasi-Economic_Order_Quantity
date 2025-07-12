@@ -1,108 +1,117 @@
 import streamlit as st
-import numpy as np
+import math
+import pandas as pd
 import matplotlib.pyplot as plt
 
-# Judul
-st.title("📦 Aplikasi Perhitungan EOQ")
-st.markdown("Hitung Economic Order Quantity (EOQ) menggunakan dua metode yang berbeda dalam satu aplikasi.")
+st.set_page_config(page_title="Aplikasi EOQ", layout="centered")
 
-# Pilihan rumus
-metode = st.selectbox("Pilih Metode Perhitungan EOQ:", ["Rumus 1 - Biaya Simpan Langsung (H)", "Rumus 2 - Berdasarkan Harga Unit dan Persentase (P × I)"])
+# Judul dan Panduan
+st.title("📦 Aplikasi Perhitungan EOQ (Economic Order Quantity)")
 
-# Input kebutuhan dan biaya pesan (umum untuk semua metode)
-st.header("📥 Input Data Umum")
-R = st.number_input("Jumlah kebutuhan tahunan (R) dalam unit", min_value=1.0, value=5000.0)
-S = st.number_input("Biaya pemesanan per pesanan (S) dalam rupiah", min_value=0.0, value=200000.0)
-
-# Proses sesuai metode
-if metode == "Rumus 1 - Biaya Simpan Langsung (H)":
-    st.subheader("🔹 Input Rumus 1")
-    H = st.number_input("Biaya simpan per unit per tahun (H) dalam rupiah", min_value=0.0, value=5000.0)
-    
-    EOQ = np.sqrt((2 * R * S) / H)
-    total_cost = (R / EOQ) * S + (EOQ / 2) * H
-
-    st.header("📊 Hasil Perhitungan EOQ - Rumus 1")
-    st.markdown(f"**EOQ = {EOQ:.2f} unit**")
-    st.markdown(f"**Total biaya persediaan = Rp {total_cost:,.2f}**")
-
-    # Grafik
-    Q_range = np.arange(100, int(EOQ*1.5), 10)
-    ordering_costs = (R / Q_range) * S
-    holding_costs = (Q_range / 2) * H
-    total_costs = ordering_costs + holding_costs
-
-    plt.figure(figsize=(10, 5))
-    plt.plot(Q_range, ordering_costs, label='Biaya Pemesanan', linestyle='--')
-    plt.plot(Q_range, holding_costs, label='Biaya Penyimpanan', linestyle='--')
-    plt.plot(Q_range, total_costs, label='Total Biaya', color='blue')
-    plt.axvline(EOQ, color='red', linestyle=':', label='EOQ')
-    plt.xlabel('Jumlah Pemesanan (Q)')
-    plt.ylabel('Biaya (Rp)')
-    plt.title('Grafik Biaya EOQ - Rumus 1')
-    plt.legend()
-    plt.grid(True)
-    st.pyplot(plt)
-
-elif metode == "Rumus 2 - Berdasarkan Harga Unit dan Persentase (P × I)":
-    st.subheader("🔹 Input Rumus 2")
-    P = st.number_input("Harga beli per unit (P) dalam rupiah", min_value=0.0, value=50000.0)
-    I_percent = st.number_input("Persentase biaya simpan per tahun (I) dalam %", min_value=0.0, value=10.0)
-    I_decimal = I_percent / 100
-    H = P * I_decimal
-
-    EOQ = np.sqrt((2 * R * S) / H)
-    total_cost = (R / EOQ) * S + (EOQ / 2) * H
-
-    st.header("📊 Hasil Perhitungan EOQ - Rumus 2")
-    st.markdown(f"**EOQ = {EOQ:.2f} unit**")
-    st.markdown(f"**Total biaya persediaan = Rp {total_cost:,.2f}**")
-    st.markdown(f"**Biaya simpan dihitung dari H = P × I = {P:.0f} × {I_decimal:.2f} = Rp {H:,.2f}**")
-
-    # Grafik
-    Q_range = np.arange(100, int(EOQ*1.5), 10)
-    ordering_costs = (R / Q_range) * S
-    holding_costs = (Q_range / 2) * H
-    total_costs = ordering_costs + holding_costs
-
-    plt.figure(figsize=(10, 5))
-    plt.plot(Q_range, ordering_costs, label='Biaya Pemesanan', linestyle='--')
-    plt.plot(Q_range, holding_costs, label='Biaya Penyimpanan', linestyle='--')
-    plt.plot(Q_range, total_costs, label='Total Biaya', color='green')
-    plt.axvline(EOQ, color='red', linestyle=':', label='EOQ')
-    plt.xlabel('Jumlah Pemesanan (Q)')
-    plt.ylabel('Biaya (Rp)')
-    plt.title('Grafik Biaya EOQ - Rumus 2')
-    plt.legend()
-    plt.grid(True)
-    st.pyplot(plt)
-
-# Panduan penggunaan aplikasi
-with st.expander("📘 Panduan Lengkap Penggunaan Aplikasi EOQ"):
+with st.expander("📘 Panduan Penggunaan"):
     st.markdown("""
-    ### 🧭 Langkah Penggunaan
+Economic Order Quantity (EOQ) adalah metode untuk menentukan jumlah pesanan optimal yang meminimalkan total biaya persediaan.
 
-    Pilih salah satu metode perhitungan EOQ sesuai data yang Anda miliki:
+### 📐 Rumus yang Digunakan:
 
-    #### ➤ Rumus 1: EOQ = √(2RS / H)
-    - Gunakan jika Anda mengetahui **biaya simpan langsung (H)** per unit per tahun.
+**Rumus Klasik:**  
+\\[
+EOQ = \\sqrt{\\frac{2 \\times R \\times S}{H}}
+\\]
 
-    #### ➤ Rumus 2: EOQ = √(2RS / (P × I))
-    - Gunakan jika Anda **tidak tahu H**, tetapi mengetahui **harga unit (P)** dan **persentase simpan tahunan (I)**.
+**Rumus Persentase:**  
+\\[
+EOQ = \\sqrt{\\frac{2 \\times R \\times S}{P \\times I}}
+\\]
 
-    #### Parameter Umum:
-    - **R**: Jumlah kebutuhan tahunan
-    - **S**: Biaya pemesanan per pesanan
-    - **H**: Biaya simpan per unit (untuk Rumus 1)
-    - **P**: Harga beli per unit (untuk Rumus 2)
-    - **I**: Persentase biaya simpan tahunan (untuk Rumus 2)
+---
 
-    #### Output:
-    - EOQ (jumlah optimal pemesanan)
-    - Total biaya persediaan tahunan
-    - Grafik hubungan jumlah pemesanan dan total biaya
+**Keterangan variabel:**
+- R = Jumlah kebutuhan tahunan (unit)
+- S = Biaya pemesanan per pesanan
+- H = Biaya simpan per unit per tahun
+- P = Harga beli per unit
+- I = Persentase biaya simpan tahunan (desimal)
 
-    👉 Gunakan grafik untuk melihat titik biaya minimum yang optimal.
-    """)
+Aplikasi ini memiliki dua bagian perhitungan terpisah.
+""")
 
-st.caption("© 2025 | Aplikasi EOQ Dua Metode | Model Matematika dalam Industri")
+# =========================
+# Input Data Umum
+# =========================
+st.header("📝 Input Data Umum")
+R = st.number_input("Jumlah kebutuhan tahunan (R) dalam unit", min_value=1.0, value=1200.0, format="%.0f")
+S = st.number_input("Biaya pemesanan per pesanan (S) dalam rupiah", min_value=0.0, value=15000000.0, format="%.0f")
+
+# =========================
+# EOQ - Rumus Klasik
+# =========================
+st.subheader("📊 Perhitungan EOQ - Rumus Klasik")
+
+H = st.number_input("Biaya simpan per unit per tahun (H) dalam rupiah", min_value=0.01, value=40000.0, format="%.0f")
+
+if H > 0:
+    eoq_klasik = math.sqrt((2 * R * S) / H)
+    st.success(f"📦 EOQ (Klasik) = {eoq_klasik:,.2f} unit")
+
+    # Visualisasi Grafik EOQ Klasik
+    st.markdown("### 📈 Grafik Biaya Total - Rumus Klasik")
+    Q_range = range(int(eoq_klasik * 0.5), int(eoq_klasik * 1.5) + 1, max(1, int(eoq_klasik / 10)))
+    grafik_data = []
+    for Q in Q_range:
+        OC = (R / Q) * S  # Ordering Cost
+        HC = (Q / 2) * H  # Holding Cost
+        TC = OC + HC
+        grafik_data.append({"Q": Q, "Biaya Total": TC, "Biaya Simpan": HC, "Biaya Pesan": OC})
+    
+    df_klasik = pd.DataFrame(grafik_data)
+    fig1, ax1 = plt.subplots()
+    ax1.plot(df_klasik["Q"], df_klasik["Biaya Total"], label="Total Cost", color="blue")
+    ax1.plot(df_klasik["Q"], df_klasik["Biaya Simpan"], label="Holding Cost", linestyle="--", color="green")
+    ax1.plot(df_klasik["Q"], df_klasik["Biaya Pesan"], label="Ordering Cost", linestyle="--", color="red")
+    ax1.axvline(eoq_klasik, color="gray", linestyle=":", label="EOQ")
+    ax1.set_xlabel("Kuantitas Pesan (Q)")
+    ax1.set_ylabel("Biaya (Rp)")
+    ax1.set_title("Kurva Biaya EOQ - Rumus Klasik")
+    ax1.legend()
+    ax1.grid(True)
+    st.pyplot(fig1)
+
+# =========================
+# EOQ - Rumus Persentase
+# =========================
+st.subheader("📊 Perhitungan EOQ - Rumus Persentase")
+
+P = st.number_input("Harga beli per unit (P) dalam rupiah", min_value=0.01, value=1000000.0, format="%.0f")
+I_percent = st.number_input("Persentase biaya simpan per tahun (I) dalam %", min_value=0.01, value=40.0, format="%.2f")
+I = I_percent / 100  # ubah ke desimal
+
+if P > 0 and I > 0:
+    H_persen = P * I
+    eoq_persen = math.sqrt((2 * R * S) / H_persen)
+    st.success(f"📦 EOQ (Persentase) = {eoq_persen:,.2f} unit")
+
+    # Visualisasi Grafik EOQ Persentase
+    st.markdown("### 📈 Grafik Biaya Total - Rumus Persentase")
+    Q_range = range(int(eoq_persen * 0.5), int(eoq_persen * 1.5) + 1, max(1, int(eoq_persen / 10)))
+    grafik_data2 = []
+    for Q in Q_range:
+        OC = (R / Q) * S
+        HC = (Q / 2) * H_persen
+        TC = OC + HC
+        grafik_data2.append({"Q": Q, "Biaya Total": TC, "Biaya Simpan": HC, "Biaya Pesan": OC})
+    
+    df_persen = pd.DataFrame(grafik_data2)
+    fig2, ax2 = plt.subplots()
+    ax2.plot(df_persen["Q"], df_persen["Biaya Total"], label="Total Cost", color="blue")
+    ax2.plot(df_persen["Q"], df_persen["Biaya Simpan"], label="Holding Cost", linestyle="--", color="green")
+    ax2.plot(df_persen["Q"], df_persen["Biaya Pesan"], label="Ordering Cost", linestyle="--", color="red")
+    ax2.axvline(eoq_persen, color="gray", linestyle=":", label="EOQ")
+    ax2.set_xlabel("Kuantitas Pesan (Q)")
+    ax2.set_ylabel("Biaya (Rp)")
+    ax2.set_title("Kurva Biaya EOQ - Rumus Persentase")
+    ax2.legend()
+    ax2.grid(True)
+    st.pyplot(fig2)
+
+st.caption("© 2025 | Aplikasi EOQ Dua Metode Rumus | Model Matematika dalam Industri")
