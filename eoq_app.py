@@ -142,7 +142,7 @@ with tab1:
         ax.set_title('Hubungan Antara Jumlah Pemesanan dan Biaya', fontsize=14, pad=20)
         ax.legend(fontsize=10)
         ax.grid(True, linestyle='--', alpha=0.7)
-        ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
+        ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", ".")))
         
         # Annotate EOQ point
         ax.annotate(f'EOQ = {eoq:,.0f} unit'.replace(",", "."), 
@@ -150,6 +150,9 @@ with tab1:
                     arrowprops=dict(facecolor='black', shrink=0.05),
                     bbox=dict(boxstyle='round,pad=0.5', fc='yellow', alpha=0.5))
         
+        # Batasi sumbu Y ke 1 milyar
+        ax.set_ylim(0, min(1_000_000_000, max(total_costs)*1.1))
+
         st.pyplot(fig)
         
         with st.expander("📝 Penjelasan Grafik", expanded=True):
