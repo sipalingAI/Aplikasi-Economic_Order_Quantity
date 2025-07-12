@@ -273,4 +273,5 @@ with tab2:
 # Footer
 st.markdown("---")
 st.markdown("📌 **Tips Penggunaan:** Gunakan contoh soal yang tersedia untuk memvalidasi perhitungan Anda")
-st.caption("© 2023 Aplikasi EOQ - Optimalkan Manajemen Persediaan Anda")
+st.caption("© 2025 Aplikasi EOQ - Optimalkan Manajemen Persediaan Anda")
+st.caption("Matematika Terapan | Di kembangkan oleh: Samuel")
