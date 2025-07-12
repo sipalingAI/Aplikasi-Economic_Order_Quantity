@@ -80,6 +80,71 @@ with st.expander("📌 Panduan Penggunaan"):
         - Menggunakan persentase simpan dari harga unit (P × I)
     - Grafik menunjukkan total biaya persediaan terhadap jumlah pemesanan.
     """)
+with st.expander("📘 Panduan Lengkap Penggunaan Aplikasi EOQ"):
+    st.markdown("""
+    ### 🧭 Langkah Penggunaan
+
+    Aplikasi ini menghitung jumlah pemesanan optimal (**EOQ**) dengan dua metode berbeda.
+
+    #### 1. Masukkan Data Kebutuhan & Biaya
+
+    | Parameter | Keterangan |
+    |----------|------------|
+    | **R (Demand)** | Jumlah permintaan tahunan (unit barang per tahun). Contoh: `5000` |
+    | **S (Ordering Cost)** | Biaya pemesanan setiap kali memesan. Contoh: `200000` rupiah |
+    | **H (Holding Cost - versi 1)** | Biaya penyimpanan per unit per tahun (langsung). Contoh: `5000` rupiah |
+    | **P (Harga per Unit)** | Harga beli per unit barang. Digunakan dalam Rumus 2. Contoh: `50000` rupiah |
+    | **I (%)** | Persentase biaya penyimpanan dari harga unit per tahun. Contoh: `10` % |
+
+    ---
+
+    #### 2. Pemilihan Rumus
+
+    Aplikasi menghitung EOQ dengan dua pendekatan:
+    - **EOQ₁**: Rumus klasik menggunakan `H`
+    - **EOQ₂**: Rumus alternatif menggunakan `P × I`
+
+    ---
+
+    #### 3. Interpretasi Hasil
+
+    Aplikasi akan menampilkan:
+    - EOQ dari masing-masing rumus
+    - Estimasi total biaya persediaan
+    - Grafik perbandingan biaya vs kuantitas pemesanan
+
+    ---
+
+    #### 4. Grafik Visualisasi
+
+    - **Sumbu X** = Jumlah unit yang dipesan
+    - **Sumbu Y** = Total biaya persediaan
+    - Garis biru: Total biaya dari Rumus 1
+    - Garis hijau: Total biaya dari Rumus 2
+    - Garis vertikal: EOQ optimal dari masing-masing metode
+
+    ---
+
+    #### 5. Contoh Perhitungan
+
+    Misal:
+    - R = 5000
+    - S = 200000
+    - H = 5000
+    - P = 50000
+    - I = 10%
+
+    Maka:
+    - EOQ₁ dan EOQ₂ ≈ 632 unit
+    - Total biaya akan terlihat di hasil aplikasi
+
+    ---
+
+    #### ✅ Tips
+    - Gunakan Rumus 1 jika tahu H langsung
+    - Gunakan Rumus 2 jika hanya punya harga dan persentase simpan
+    - Cek grafik untuk visualisasi titik biaya minimum
+    """)
 
 # Footer
 st.caption("© 2025 | EOQ Dua Rumus - Model Matematika Industri")
