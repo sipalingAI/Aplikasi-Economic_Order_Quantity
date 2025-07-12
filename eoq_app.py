@@ -143,7 +143,7 @@ with tab1:
         # Formatting dengan skala miliar
         plt.ylim(0, 1_000_000_000)  # Maksimal 1 miliar
         plt.yticks(np.arange(0, 1_100_000_000, 100_000_000))  # Interval 100 juta
-        ax.yaxis.set_major_formatter(FuncFormatter(format_miliar))
+        ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", ".")))
         
         ax.set_xlabel('Jumlah Pemesanan (Q)', fontsize=12)
         ax.set_ylabel('Biaya', fontsize=12)
@@ -243,7 +243,7 @@ with tab2:
         # Formatting dengan skala miliar
         plt.ylim(0, 1_500_000_000)  # Maksimal 1.5 miliar
         plt.yticks(np.arange(0, 1_600_000_000, 200_000_000))  # Interval 200 juta
-        ax.yaxis.set_major_formatter(FuncFormatter(format_miliar))
+        ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", ".")))
         
         ax.set_xlabel('Jumlah Pemesanan (Q)', fontsize=12)
         ax.set_ylabel('Biaya', fontsize=12)
