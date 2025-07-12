@@ -7,7 +7,7 @@ from matplotlib.ticker import StrMethodFormatter
 # Konfigurasi tema Streamlit
 st.set_page_config(
     page_title="Aplikasi EOQ Interaktif",
-    page_icon="📊",
+    page_icon="💡",
     layout="wide"
 )
 
