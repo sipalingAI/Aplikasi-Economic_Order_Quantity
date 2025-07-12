@@ -152,6 +152,7 @@ with tab1:
         
         # Batasi sumbu Y ke 1 milyar
         ax.set_ylim(0, min(1_000_000_000, max(total_costs)*1.1))
+        ax.set_xlim(0, min(1_000_000_000, max(total_costs)*1.1))
 
         st.pyplot(fig)
         
