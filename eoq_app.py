@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 from matplotlib.ticker import StrMethodFormatter
-
+from matplotlib.ticker import FuncFormatter
 # Konfigurasi tema Streamlit
 st.set_page_config(
     page_title="Aplikasi EOQ Interaktif",
