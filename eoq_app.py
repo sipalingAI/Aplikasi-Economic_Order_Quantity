@@ -151,8 +151,7 @@ with tab1:
                     bbox=dict(boxstyle='round,pad=0.5', fc='yellow', alpha=0.5))
         
         # Batasi sumbu Y ke 1 milyar
-        def milyar_format(x, pos):
-            return f'{x/1_000_000_000:.1f} M' if x >= 1_000_000_000 else f'{x/1_000_000:.0f} jt'
+        ax.set_ylim(0, min(1_000_000_000, max(total_costs)*1.1))
 
         st.pyplot(fig)
         
