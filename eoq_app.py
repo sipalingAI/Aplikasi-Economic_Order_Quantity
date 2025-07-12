@@ -2,8 +2,12 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-from matplotlib.ticker import StrMethodFormatter
-from matplotlib.ticker import FuncFormatter
+from matplotlib.ticker import FuncFormatter, StrMethodFormatter
+
+# Fungsi format miliar
+def format_miliar(x, pos):
+    return 'Rp %.1fM' % (x / 1_000_000)
+
 # Konfigurasi tema Streamlit
 st.set_page_config(
     page_title="Aplikasi EOQ Interaktif",
@@ -136,13 +140,16 @@ with tab1:
         ax.plot(q_values, total_costs, label='Total Biaya', color='#45B7D1', linewidth=3)
         ax.axvline(eoq, color='#FFA500', linestyle='--', label='EOQ (Titik Optimal)')
         
-        # Formatting
+        # Formatting dengan skala miliar
+        plt.ylim(0, 1_000_000_000)  # Maksimal 1 miliar
+        plt.yticks(np.arange(0, 1_100_000_000, 100_000_000))  # Interval 100 juta
+        ax.yaxis.set_major_formatter(FuncFormatter(format_miliar))
+        
         ax.set_xlabel('Jumlah Pemesanan (Q)', fontsize=12)
-        ax.set_ylabel('Biaya (Rp)', fontsize=12)
-        ax.set_title('Hubungan Antara Jumlah Pemesanan dan Biaya', fontsize=14, pad=20)
+        ax.set_ylabel('Biaya', fontsize=12)
+        ax.set_title('Hubungan Antara Jumlah Pemesanan dan Biaya (Skala Miliar Rp)', fontsize=14, pad=20)
         ax.legend(fontsize=10)
         ax.grid(True, linestyle='--', alpha=0.7)
-        ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f"{x:,.0f}".replace(",", ".")))
         
         # Annotate EOQ point
         ax.annotate(f'EOQ = {eoq:,.0f} unit'.replace(",", "."), 
@@ -150,10 +157,6 @@ with tab1:
                     arrowprops=dict(facecolor='black', shrink=0.05),
                     bbox=dict(boxstyle='round,pad=0.5', fc='yellow', alpha=0.5))
         
-        # Batasi sumbu Y ke 1 milyar
-        ax.set_ylim(0, min(1_000_000_000, max(total_costs)*1.1))
-        ax.set_xlim(0, min(1_000_000_000, max(total_costs)*1.1))
-
         st.pyplot(fig)
         
         with st.expander("📝 Penjelasan Grafik", expanded=True):
@@ -237,13 +240,16 @@ with tab2:
         ax.plot(q_values, total_costs, label='Total Biaya', color='#45B7D1', linewidth=3)
         ax.axvline(eoq, color='#FFA500', linestyle='--', label='EOQ (Titik Optimal)')
         
-        # Formatting
+        # Formatting dengan skala miliar
+        plt.ylim(0, 1_500_000_000)  # Maksimal 1.5 miliar
+        plt.yticks(np.arange(0, 1_600_000_000, 200_000_000))  # Interval 200 juta
+        ax.yaxis.set_major_formatter(FuncFormatter(format_miliar))
+        
         ax.set_xlabel('Jumlah Pemesanan (Q)', fontsize=12)
-        ax.set_ylabel('Biaya (Rp)', fontsize=12)
-        ax.set_title('Hubungan Antara Jumlah Pemesanan dan Biaya', fontsize=14, pad=20)
+        ax.set_ylabel('Biaya', fontsize=12)
+        ax.set_title('Hubungan Antara Jumlah Pemesanan dan Biaya (Skala Miliar Rp)', fontsize=14, pad=20)
         ax.legend(fontsize=10)
         ax.grid(True, linestyle='--', alpha=0.7)
-        ax.yaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
         
         # Annotate EOQ point
         ax.annotate(f'EOQ = {eoq:,.0f} unit'.replace(",", "."), 
@@ -278,4 +284,4 @@ with tab2:
 st.markdown("---")
 st.markdown("📌 **Tips Penggunaan:** Gunakan contoh soal yang tersedia untuk memvalidasi perhitungan Anda")
 st.caption("© 2025 Aplikasi EOQ - Optimalkan Manajemen Persediaan Anda")
-st.caption("Matematika Terapan | Di kembangkan oleh: Samuel")
+st.caption("Matematika Terapan | Dikembangkan oleh: Samuel")
