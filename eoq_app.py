@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 from matplotlib.ticker import FuncFormatter, StrMethodFormatter
-
+import matplotlib.ticker as mticker
 # Fungsi format miliar
 def format_miliar(x, pos):
     return 'Rp %.1fM' % (x / 1_000_000)
