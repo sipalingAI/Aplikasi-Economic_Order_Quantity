@@ -47,7 +47,7 @@ st.markdown("""
 # Header dengan gambar
 col1, col2 = st.columns([1, 3])
 with col1:
-    st.image("https://cdn-icons-png.flaticon.com/512/3116/3116112.png", width=100)
+    st.image("https://images.icon-icons.com/4309/PNG/512/seminar_lecture_speech_talk_slides_presentation_icon_267246.png", width=100)
 with col2:
     st.title("Aplikasi Perhitungan EOQ")
     st.markdown("**Economic Order Quantity - Optimalkan Persediaan Anda**")
